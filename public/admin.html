@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administração - Trackify</title>
+  <link rel="icon" href="imgs/favico.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header>
+    <h1>Painel de Administração</h1>
+  </header>
+
+  <!-- Seção Principal -->
+  <main>
+    <div class="container">
+      <form id="generate-codes-form">
+        <label for="cities">Cidades de destino (separadas por vírgula):</label>
+        <input type="text" id="cities" placeholder="Ex: São Paulo, Rio de Janeiro" required>
+        <label for="quantity">Quantidade de códigos:</label>
+        <input type="number" id="quantity" min="1" required>
+        <button type="submit" id="generate-codes">Gerar Códigos</button>
+      </form>
+      <div id="generated-codes" class="generated-codes"></div>
+    </div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; 2023 Trackify. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>

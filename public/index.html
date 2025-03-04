@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trackify - Rastreamento Inteligente</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="imgs/favico.svg" type="image/svg+xml">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <img src="imgs/Trackify.svg" alt="Logo Trackify">
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <h2>Rastreie sua entrega com facilidade</h2>
+        <p>Insira o código de rastreamento abaixo para acompanhar o status atual da sua encomenda. Nossa plataforma oferece informações precisas e atualizadas em tempo real.</p>
+        <form id="trackingForm" class="form">
+          <input type="text" id="tracking-code" placeholder="Digite o código de rastreio" required>
+          <button type="submit" id="check-status">Consultar</button>
+        </form>
+      </div>
+      <div class="hero-image">
+        <img src="imgs/delivery.svg" alt="Ilustração de Entrega">
+      </div>
+    </div>
+  </section>
+
+  <!-- Tracking Results Section -->
+  <section id="tracking-results" class="tracking-results hidden">
+    <div class="container">
+      <h2>Histórico de Rastreamento</h2>
+      <ul id="tracking-history" class="tracking-list"></ul>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <h2>O que fazemos?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <img src="imgs/real-time.svg" alt="Ícone de Tempo Real">
+          <h3>Acompanhamento em Tempo Real</h3>
+          <p>Receba atualizações automáticas sobre o status da sua entrega diretamente no seu dispositivo.</p>
+        </div>
+        <div class="feature-card">
+          <img src="imgs/support.svg" alt="Ícone de Suporte">
+          <h3>Suporte 24/7</h3>
+          <p>Nossa equipe está disponível para ajudar com qualquer dúvida ou problema relacionado à sua entrega.</p>
+        </div>
+        <div class="feature-card">
+          <img src="imgs/security.svg" alt="Ícone de Segurança">
+          <h3>Segurança Garantida</h3>
+          <p>Todas as suas informações são protegidas por criptografia avançada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Trackify. Todos os direitos reservados.</p>
+      <nav>
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Termos de Uso</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
