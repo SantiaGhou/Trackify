@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const trackingHistoryList = document.getElementById("tracking-history");
 
   if (!form || !trackingResultsSection || !trackingHistoryList) {
-    console.error("Elementos do DOM não foram encontrados!");
+    console.error("Erro: Elementos do DOM não foram encontrados!");
     return;
   }
 
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Código inserido:", trackingCode);
 
     try {
-      // Faz a requisição para a API (simulação)
+      // Faz a requisição para a API
       const response = await fetch(`/api/check-status/${trackingCode}`);
 
       if (!response.ok) {
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function displayTrackingResults(history) {
     if (!trackingHistoryList || !trackingResultsSection) {
-      console.error("Elementos de rastreamento não foram carregados corretamente!");
+      console.error("Erro: Elementos de rastreamento não foram carregados corretamente!");
       return;
     }
 
@@ -54,11 +54,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // Adiciona cada item do histórico à lista
     history.forEach((item) => {
       const listItem = document.createElement("li");
-      listItem.innerHTML = `
-        <span class="status">${item.status || "Status desconhecido"}</span>
-        <span class="timestamp">${item.timestamp || "Data/hora indisponível"}</span>
-        <p>${item.description || "Descrição indisponível"}</p>
-      `;
+
+      const statusSpan = document.createElement("span");
+      statusSpan.classList.add("status");
+      statusSpan.textContent = item.status || "Status desconhecido";
+
+      const timestampSpan = document.createElement("span");
+      timestampSpan.classList.add("timestamp");
+      timestampSpan.textContent = item.timestamp || "Data/hora indisponível";
+
+      const descriptionP = document.createElement("p");
+      descriptionP.textContent = item.description || "Descrição indisponível";
+
+      listItem.appendChild(statusSpan);
+      listItem.appendChild(timestampSpan);
+      listItem.appendChild(descriptionP);
       trackingHistoryList.appendChild(listItem);
     });
 
