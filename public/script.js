@@ -1,51 +1,52 @@
-document.getElementById("generateForm").addEventListener("submit", async (event) => {
-  event.preventDefault();
+document.getElementById("trackingForm").addEventListener("submit", async (event) => {
+  event.preventDefault(); // Impede o recarregamento da página
 
-  // Obtém os valores do formulário
-  const cities = document.getElementById("cities").value.trim();
-  const quantity = parseInt(document.getElementById("quantity").value, 10);
+  // Obtém o código digitado pelo usuário
+  const trackingCode = document.getElementById("tracking-code").value.trim();
 
   // Validação básica
-  if (!cities || quantity < 1) {
-    alert("Por favor, insira as cidades e a quantidade de códigos.");
+  if (!trackingCode) {
+    alert("Por favor, insira um código de rastreamento.");
     return;
   }
 
   try {
     // Faz a requisição para a API
-    const response = await fetch("/api/generate-codes", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ cities, quantity })
-    });
+    const response = await fetch(`/api/check-status/${trackingCode}`);
+    const data = await response.json();
 
-    // Verifica se a resposta foi bem-sucedida
-    if (!response.ok) {
-      const data = await response.json();
-      alert(data.error || "Ocorreu um erro ao gerar os códigos.");
+    // Verifica se o código foi encontrado
+    if (response.status === 404) {
+      alert(data.error || "Código não encontrado.");
       return;
     }
 
-    // Converte a resposta em JSON
-    const data = await response.json();
-
-    // Exibe os códigos gerados
-    displayGeneratedCodes(data.generatedCodes);
+    // Exibe os resultados
+    displayTrackingResults(data.history);
   } catch (error) {
-    console.error("Erro ao gerar os códigos:", error);
-    alert("Ocorreu um erro ao gerar os códigos. Tente novamente.");
+    console.error("Erro ao consultar o status:", error);
+    alert("Ocorreu um erro ao consultar o status. Tente novamente.");
   }
 });
 
-function displayGeneratedCodes(codes) {
-  const generatedCodesSection = document.getElementById("generated-codes");
-  generatedCodesSection.innerHTML = ""; // Limpa a seção anterior
+function displayTrackingResults(history) {
+  const trackingResultsSection = document.getElementById("tracking-results");
+  const trackingHistoryList = document.getElementById("tracking-history");
 
-  codes.forEach((code) => {
-    const paragraph = document.createElement("p");
-    paragraph.innerHTML = `<code>${code}</code>`;
-    generatedCodesSection.appendChild(paragraph);
+  // Limpa a lista anterior
+  trackingHistoryList.innerHTML = "";
+
+  // Adiciona cada item do histórico à lista
+  history.forEach((item) => {
+    const listItem = document.createElement("li");
+    listItem.innerHTML = `
+      <span class="status">${item.status || "Status desconhecido"}</span>
+      <span class="timestamp">${item.timestamp || "Data/hora indisponível"}</span>
+      <p>${item.description || "Descrição indisponível"}</p>
+    `;
+    trackingHistoryList.appendChild(listItem);
   });
+
+  // Remove a classe "hidden" para exibir a seção
+  trackingResultsSection.classList.remove("hidden");
 }

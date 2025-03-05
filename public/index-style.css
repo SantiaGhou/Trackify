@@ -1,16 +1,31 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9; /* Fundo claro */
+  color: #333;
+  line-height: 1.6;
+}
+
 /* Seção principal */
 main {
-  padding: 20px;
+  padding: 2rem; /* Espaçamento maior para melhorar a aparência */
   text-align: center;
 }
 
 .container {
   max-width: 600px;
   margin: 0 auto;
-  background-color: #ffffff;
-  padding: 20px;
+  background-color: #ffffff; /* Fundo branco */
+  padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  text-align: center;
 }
 
 .illustration {
@@ -20,20 +35,28 @@ main {
 
 form input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #cccccc;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease; /* Transição suave ao focar */
+}
+
+form input:focus {
+  border-color: #ff6f00; /* Destaque no foco */
+  outline: none;
 }
 
 form button {
-  padding: 10px 20px;
-  background-color: #ff6f00; /* Laranja */
-  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  background-color: #ff6f00; /* Laranja vibrante */
+  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease; /* Transição suave no hover */
 }
 
 form button:hover {
@@ -42,6 +65,45 @@ form button:hover {
 
 .status-message {
   margin-top: 20px;
-  font-size: 14px;
+  font-size: 0.9rem;
   color: #555555;
+}
+
+/* Estilo para a seção de códigos gerados */
+.generated-codes {
+  margin-top: 2rem;
+  text-align: left; /* Alinhamento à esquerda para melhor legibilidade */
+}
+
+.generated-codes p {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.generated-codes p code {
+  background-color: #f0f0f0; /* Fundo claro para os códigos */
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  color: #ff6f00; /* Destacar os códigos */
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  main {
+    padding: 1rem; /* Reduz o espaçamento em telas menores */
+  }
+
+  .container {
+    padding: 1.5rem;
+  }
+
+  form input {
+    font-size: 0.9rem;
+  }
+
+  form button {
+    font-size: 0.9rem;
+  }
 }

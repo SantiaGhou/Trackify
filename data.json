@@ -1,3 +1,18 @@
 {
-  "trackingCodes": []
+  "trackingCodes": [
+    {
+      "code": "BR6714167520W",
+      "city": "São Paulo",
+      "createdAt": 1741186460357,
+      "currentStep": 0,
+      "hasFailed": false,
+      "history": [
+        {
+          "status": "CRIADO",
+          "timestamp": "05/03/2025, 09:00:00",
+          "description": "A entrega foi criada com sucesso. Aguarde os demais status de rastreamento."
+        }
+      ]
+    }
+  ]
 }
