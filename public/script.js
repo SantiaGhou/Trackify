@@ -1,46 +1,51 @@
-document.getElementById("trackingForm").addEventListener("submit", async (event) => {
+document.getElementById("generateForm").addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  // Obtém o código digitado pelo usuário
-  const trackingCode = document.getElementById("tracking-code").value;
+  // Obtém os valores do formulário
+  const cities = document.getElementById("cities").value.trim();
+  const quantity = parseInt(document.getElementById("quantity").value, 10);
+
+  // Validação básica
+  if (!cities || quantity < 1) {
+    alert("Por favor, insira as cidades e a quantidade de códigos.");
+    return;
+  }
 
   try {
     // Faz a requisição para a API
-    const response = await fetch(`/api/check-status/${trackingCode}`);
-    const data = await response.json();
+    const response = await fetch("/api/generate-codes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ cities, quantity })
+    });
 
-    // Verifica se o código foi encontrado
-    if (response.status === 404) {
-      alert(data.error); // Exibe mensagem de erro
+    // Verifica se a resposta foi bem-sucedida
+    if (!response.ok) {
+      const data = await response.json();
+      alert(data.error || "Ocorreu um erro ao gerar os códigos.");
       return;
     }
 
-    // Exibe os resultados
-    displayTrackingResults(data.history);
+    // Converte a resposta em JSON
+    const data = await response.json();
+
+    // Exibe os códigos gerados
+    displayGeneratedCodes(data.generatedCodes);
   } catch (error) {
-    console.error("Erro ao consultar o status:", error);
-    alert("Ocorreu um erro ao consultar o status. Tente novamente.");
+    console.error("Erro ao gerar os códigos:", error);
+    alert("Ocorreu um erro ao gerar os códigos. Tente novamente.");
   }
 });
 
-function displayTrackingResults(history) {
-  const trackingResultsSection = document.getElementById("tracking-results");
-  const trackingHistoryList = document.getElementById("tracking-history");
+function displayGeneratedCodes(codes) {
+  const generatedCodesSection = document.getElementById("generated-codes");
+  generatedCodesSection.innerHTML = ""; // Limpa a seção anterior
 
-  // Limpa a lista anterior
-  trackingHistoryList.innerHTML = "";
-
-  // Adiciona cada item do histórico à lista
-  history.forEach((item) => {
-    const listItem = document.createElement("li");
-    listItem.innerHTML = `
-      <span class="status">${item.status}</span>
-      <span class="timestamp">${item.timestamp}</span>
-      <p>${item.description}</p>
-    `;
-    trackingHistoryList.appendChild(listItem);
+  codes.forEach((code) => {
+    const paragraph = document.createElement("p");
+    paragraph.innerHTML = `<code>${code}</code>`;
+    generatedCodesSection.appendChild(paragraph);
   });
-
-  // Remove a classe "hidden" para exibir a seção
-  trackingResultsSection.classList.remove("hidden");
 }

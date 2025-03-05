@@ -4,20 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Administração - Trackify</title>
-  <link rel="icon" href="imgs/favico.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="admin-style.css">
+  <link rel="icon" href="imgs/favico.svg" type="image/svg+xml">
 </head>
 <body>
-  <!-- Cabeçalho -->
-  <header>
-    <h1>Painel de Administração</h1>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <h1>Painel de Administração</h1>
+      </div>
+    </div>
   </header>
 
-  <!-- Seção Principal -->
+  <!-- Main Section -->
   <main>
     <div class="container">
-      <form id="generate-codes-form">
+      <h1>Gerar Códigos de Rastreamento</h1>
+      <form id="generateForm">
         <label for="cities">Cidades de destino (separadas por vírgula):</label>
         <input type="text" id="cities" placeholder="Ex: São Paulo, Rio de Janeiro" required>
         <label for="quantity">Quantidade de códigos:</label>
@@ -28,12 +33,13 @@
     </div>
   </main>
 
-  <!-- Rodapé -->
-  <footer>
-    <p>&copy; 2023 Trackify. Todos os direitos reservados.</p>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Trackify. Todos os direitos reservados.</p>
+    </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="script.js"></script>
 </body>
 </html>

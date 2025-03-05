@@ -17,6 +17,10 @@ const DATA_FILE = "./data.json";
 // Função para ler os dados do arquivo
 function readData() {
   try {
+    if (!fs.existsSync(DATA_FILE)) {
+      // Se o arquivo não existir, cria um novo com uma estrutura inicial
+      fs.writeFileSync(DATA_FILE, JSON.stringify({ trackingCodes: [] }, null, 2));
+    }
     const rawData = fs.readFileSync(DATA_FILE);
     return JSON.parse(rawData);
   } catch (error) {
@@ -38,10 +42,15 @@ function saveData(data) {
 // Rota para gerar códigos de rastreamento
 app.post("/api/generate-codes", (req, res) => {
   const { cities, quantity } = req.body;
-  const citiesList = cities.split(/[,;]/).map(city => city.trim()).filter(city => city !== "");
 
-  if (!citiesList.length || !quantity || quantity < 1) {
+  // Validação dos parâmetros
+  if (!cities || !quantity || quantity < 1) {
     return res.status(400).json({ error: "Parâmetros inválidos." });
+  }
+
+  const citiesList = cities.split(/[,;]/).map(city => city.trim()).filter(city => city !== "");
+  if (!citiesList.length) {
+    return res.status(400).json({ error: "Nenhuma cidade válida fornecida." });
   }
 
   const data = readData();
