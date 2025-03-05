@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs"); // Módulo para manipular arquivos
 
 const app = express();
-const PORT = 3000;
+const PORT = 80;
 
 // Middleware
 app.use(cors());
