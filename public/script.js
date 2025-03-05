@@ -2,9 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM totalmente carregado!");
 
   const form = document.getElementById("trackingForm");
+  const trackingResultsSection = document.getElementById("tracking-results");
+  const trackingHistoryList = document.getElementById("tracking-history");
 
-  if (!form) {
-    console.error("Formulário não encontrado!");
+  if (!form || !trackingResultsSection || !trackingHistoryList) {
+    console.error("Elementos do DOM não foram encontrados!");
     return;
   }
 
@@ -25,13 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       // Faz a requisição para a API (simulação)
       const response = await fetch(`/api/check-status/${trackingCode}`);
-      const data = await response.json();
 
-      // Verifica se o código foi encontrado
-      if (response.status === 404) {
-        alert(data.error || "Código não encontrado.");
-        return;
+      if (!response.ok) {
+        throw new Error("Código não encontrado ou erro na requisição.");
       }
+
+      const data = await response.json();
 
       // Exibe os resultados
       displayTrackingResults(data.history);
@@ -42,11 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function displayTrackingResults(history) {
-    const trackingResultsSection = document.getElementById("tracking-results");
-    const trackingHistoryList = document.getElementById("tracking-history");
-
-    if (!trackingResultsSection || !trackingHistoryList) {
-      console.error("Elementos de resultado não encontrados!");
+    if (!trackingHistoryList || !trackingResultsSection) {
+      console.error("Elementos de rastreamento não foram carregados corretamente!");
       return;
     }
 
