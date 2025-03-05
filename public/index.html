@@ -23,7 +23,7 @@
       <div class="hero-content">
         <h2>Rastreie sua entrega com facilidade</h2>
         <p>Insira o código de rastreamento abaixo para acompanhar o status atual da sua encomenda. Nossa plataforma oferece informações precisas e atualizadas em tempo real.</p>
-        <form id="trackingForm" class="form">
+        <form id="trackingForm" class="form"  onsubmit="return false;">
           <input type="text" id="tracking-code" placeholder="Digite o código de rastreio" required>
           <button type="submit" id="check-status">Consultar</button>
         </form>
@@ -78,6 +78,6 @@
   </footer>
 
   <!-- JavaScript -->
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
