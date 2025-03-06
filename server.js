@@ -5,17 +5,12 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Usa a porta do ambiente ou fallback para 3000
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public'))); // Serve arquivos estáticos
-
-// Rota principal
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Redireciona para o index.html
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Caminho para o arquivo data.json
 const DATA_FILE = "./data.json";
@@ -44,11 +39,25 @@ function saveData(data) {
     }
 }
 
+// Função para gerar um código de rastreamento
+function generateTrackingCode(type) {
+    const prefixMap = {
+        "normal": "BR",
+        "express": "EX",
+        "international": "INT"
+    };
+
+    const prefix = prefixMap[type] || "BR"; // Default para "normal" se o tipo não for reconhecido
+    const number = Math.floor(100000000 + Math.random() * 900000000);
+    const suffix = Math.random().toString(36).substring(2, 4).toUpperCase();
+    return `${prefix}${number}${suffix}`;
+}
+
 // Rota para gerar códigos de rastreamento
 app.post("/api/generate-codes", (req, res) => {
-    const { cities, quantity } = req.body;
+    const { cities, quantity, type } = req.body;
 
-    if (!cities || !quantity || quantity < 1) {
+    if (!cities || !quantity || quantity < 1 || !type) {
         return res.status(400).json({ error: "Parâmetros inválidos." });
     }
 
@@ -61,7 +70,7 @@ app.post("/api/generate-codes", (req, res) => {
     const generatedCodes = [];
 
     for (let i = 0; i < quantity; i++) {
-        const code = generateTrackingCode();
+        const code = generateTrackingCode(type); // Passa o tipo para a função
         const city = citiesList[i % citiesList.length];
         const now = Date.now();
 
@@ -72,7 +81,7 @@ app.post("/api/generate-codes", (req, res) => {
             {
                 status: "CRIADO",
                 timestamp: createdAtDate.toLocaleString("pt-BR", { hour12: false }),
-                description: "A entrega foi criada com sucesso. Aguarde os demais status de rastreamento."
+                description: "Pedido aprovado!. Aguarde os demais status de rastreamento."
             }
         ];
 
@@ -92,47 +101,73 @@ app.post("/api/generate-codes", (req, res) => {
     res.json({ generatedCodes });
 });
 
-// Rota para consultar o status de um código
+/// Rota para consultar o status de um código
 app.get("/api/check-status/:code", (req, res) => {
     const { code } = req.params;
+  
+    // Limpa o código recebido (remove espaços e caracteres indesejados)
+    const cleanedCode = code.replace(/\s*\(.*$/, '').trim();
+  
     const data = readData();
-
-    const trackingCode = data.trackingCodes.find(item => item.code === code);
+  
+    const trackingCode = data.trackingCodes.find(item => item.code === cleanedCode);
+  
     if (!trackingCode) {
-        return res.status(404).json({ error: "Código não encontrado." });
+      return res.status(404).json({ error: "Código não encontrado." });
     }
-
+  
     res.json({
-        code: trackingCode.code,
-        city: trackingCode.city,
-        history: trackingCode.history
+      code: trackingCode.code,
+      city: trackingCode.city,
+      history: trackingCode.history,
     });
-});
-
-// Função para gerar um código de rastreamento
-function generateTrackingCode() {
-    const prefix = "BR";
-    const number = Math.floor(100000000 + Math.random() * 900000000);
-    const suffix = Math.random().toString(36).substring(2, 4).toUpperCase();
-    return `${prefix}${number}${suffix}`;
-}
+  });
 
 // Automação de status
 setInterval(() => {
     const now = Date.now();
-    const steps = [
-        { status: "DESPACHADO", days: 2, description: "O produto foi despachado na unidade de centro de distribuição." },
-        { status: "EM TRANSFERÊNCIA", days: 4, description: "A carga está em processo de transferência entre filiais." },
-        { status: "ENTRADA FILIAL DESTINO", days: 7, description: "A carga chegou na filial." },
-        { status: "PRODUTO EM ANÁLISE", days: 10, description: "O seu produto está em processo de análise de liberação da alfândega." },
-        { status: "PRODUTO LIBERADO", days: 12, description: "Seu produto foi analisado com sucesso, em breve estará disponível para entrega." },
-        { status: "PRODUTO EM ROTA DE ENTREGA", days: 15, description: "Seu produto está em transferência para a cidade de destino." },
-        { status: "PRODUTO CHEGOU NA CIDADE DE DESTINO", days: 20, description: "Objeto postado foi postado após o horário limite da unidade, sujeito encaminhamento no próximo dia útil." },
-        { status: "PRODUTO NA FILA DE ENTREGA", days: 25, description: "Seu produto foi encaminhado para a fila de entrega, por conta da alta demanda de entregas feitas pela transportadora." },
-        { status: "PRODUTO SAIU PARA ENTREGA", days: 28, description: "Seu produto saiu para entrega ao destinatário." },
-        { status: "FALHA NA ENTREGA", days: 29, description: "O entregador não localizou o endereço do destinatário. Nova tentativa será feita no próximo dia útil." },
-        { status: "PRODUTO SAIU PARA ENTREGA", days: 30, description: "Nova tentativa de entrega ao destinatário." },
-        { status: "PRODUTO ENTREGUE AO DESTINATÁRIO", days: 30, description: "Produto entregue ao destinatário." }
+
+    // Steps para pedidos nacionais
+    const nationalSteps = [
+        { status: "POSTADO", days: 0, description: "O seu pedido foi postado com sucesso." },
+        { status: "DESPACHADO", days: 1, description: "O produto foi despachado da unidade de origem." },
+        { status: "EM TRÂNSITO LOCAL", days: 2, description: "O produto está em trânsito local." },
+        { status: "ENTRADA NO CENTRO DE DISTRIBUIÇÃO", days: 3, description: "O produto chegou ao centro de distribuição." },
+        { status: "CLASSIFICAÇÃO DO PRODUTO", days: 4, description: "O produto está sendo classificado para envio." },
+        { status: "EM TRANSFERÊNCIA PARA FILIAL", days: 5, description: "O produto está sendo transferido para a filial de destino." },
+        { status: "ENTRADA NA FILIAL DESTINO", days: 7, description: "O produto chegou à filial de destino." },
+        { status: "PREPARAÇÃO PARA ENTREGA", days: 9, description: "O produto está sendo preparado para entrega." },
+        { status: "PRODUTO EM ROTA DE ENTREGA", days: 11, description: "O produto está em rota de entrega para a cidade de destino." },
+        { status: "CHEGADA NA CIDADE DE DESTINO", days: 13, description: "O produto chegou na cidade de destino." },
+        { status: "NA FILA DE ENTREGA", days: 15, description: "O produto está na fila de entrega." },
+        { status: "SAIU PARA ENTREGA", days: 17, description: "O produto saiu para entrega ao destinatário." },
+        { status: "FALHA NA ENTREGA", days: 18, description: "O entregador não localizou o endereço do destinatário. Nova tentativa será feita no próximo dia útil." },
+        { status: "NOVA TENTATIVA DE ENTREGA", days: 19, description: "Nova tentativa de entrega ao destinatário." },
+        { status: "ENTREGUE AO DESTINATÁRIO", days: 20, description: "O produto foi entregue ao destinatário." }
+    ];
+
+    // Steps para pedidos internacionais
+    const internationalSteps = [
+        { status: "POSTADO", days: 0, description: "O seu pedido foi postado com sucesso." },
+        { status: "DESPACHADO DA ORIGEM", days: 2, description: "O produto foi despachado da unidade de origem internacional." },
+        { status: "EM TRÂNSITO INTERNACIONAL", days: 5, description: "O produto está em trânsito internacional." },
+        { status: "CHEGADA NO PAÍS DE DESTINO", days: 10, description: "O produto chegou ao país de destino." },
+        { status: "EM TRÂNSITO PARA ALFÂNDEGA", days: 12, description: "O produto está em trânsito para a alfândega." },
+        { status: "ANÁLISE NA ALFÂNDEGA", days: 15, description: "O produto está em análise na alfândega." },
+        { status: "LIBERADO PELA ALFÂNDEGA", days: 18, description: "O produto foi liberado pela alfândega." },
+        { status: "EM TRANSFERÊNCIA PARA CENTRO DE DISTRIBUIÇÃO", days: 20, description: "O produto está sendo transferido para o centro de distribuição nacional." },
+        { status: "ENTRADA NO CENTRO DE DISTRIBUIÇÃO", days: 22, description: "O produto chegou ao centro de distribuição nacional." },
+        { status: "CLASSIFICAÇÃO DO PRODUTO", days: 24, description: "O produto está sendo classificado para envio." },
+        { status: "EM TRANSFERÊNCIA PARA FILIAL", days: 26, description: "O produto está sendo transferido para a filial de destino." },
+        { status: "ENTRADA NA FILIAL DESTINO", days: 28, description: "O produto chegou à filial de destino." },
+        { status: "PREPARAÇÃO PARA ENTREGA", days: 30, description: "O produto está sendo preparado para entrega." },
+        { status: "PRODUTO EM ROTA DE ENTREGA", days: 32, description: "O produto está em rota de entrega para a cidade de destino." },
+        { status: "CHEGADA NA CIDADE DE DESTINO", days: 34, description: "O produto chegou na cidade de destino." },
+        { status: "NA FILA DE ENTREGA", days: 36, description: "O produto está na fila de entrega." },
+        { status: "SAIU PARA ENTREGA", days: 38, description: "O produto saiu para entrega ao destinatário." },
+        { status: "FALHA NA ENTREGA", days: 39, description: "O entregador não localizou o endereço do destinatário. Nova tentativa será feita no próximo dia útil." },
+        { status: "NOVA TENTATIVA DE ENTREGA", days: 40, description: "Nova tentativa de entrega ao destinatário." },
+        { status: "ENTREGUE AO DESTINATÁRIO", days: 41, description: "O produto foi entregue ao destinatário." }
     ];
 
     const data = readData();
@@ -140,8 +175,12 @@ setInterval(() => {
     data.trackingCodes.forEach(trackingCode => {
         const elapsedTime = (now - trackingCode.createdAt) / (1000 * 60 * 60 * 24);
 
+        // Determina os steps com base no tipo de código
+        const steps = trackingCode.code.startsWith("INT") ? internationalSteps : nationalSteps;
+
+        // Falha na entrega
         if (
-            elapsedTime >= 28 && elapsedTime < 29 &&
+            elapsedTime >= steps[steps.length - 3].days && elapsedTime < steps[steps.length - 2].days &&
             !trackingCode.hasFailed &&
             Math.random() < 0.5
         ) {
@@ -157,6 +196,7 @@ setInterval(() => {
             trackingCode.currentStep = steps.findIndex(step => step.status === "FALHA NA ENTREGA");
         }
 
+        // Avanço no status
         const nextStep = steps.find(step => step.days > elapsedTime);
 
         if (nextStep && trackingCode.currentStep < steps.indexOf(nextStep)) {

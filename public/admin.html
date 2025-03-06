@@ -4,20 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Administração - Trackify</title>
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="admin-style.css">
   <link rel="icon" href="imgs/favico.svg" type="image/svg+xml">
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="logo">
-        <h1>Painel de Administração</h1>
-      </div>
-    </div>
-  </header>
-
   <!-- Main Section -->
   <main>
     <div class="container">
@@ -25,11 +15,20 @@
       <form id="generateForm">
         <label for="cities">Cidades de destino (separadas por vírgula):</label>
         <input type="text" id="cities" placeholder="Ex: São Paulo, Rio de Janeiro" required>
+        
         <label for="quantity">Quantidade de códigos:</label>
         <input type="number" id="quantity" min="1" required>
+        
+        <label for="type">Tipo de Código:</label>
+        <select id="type" required>
+          <option value="normal">Nacional</option>
+          <option value="international">Internacional</option>
+        </select>
+        
         <button type="submit" id="generate-codes">Gerar Códigos</button>
       </form>
       <div id="generated-codes" class="generated-codes"></div>
+      <div id="message" class="message hidden"></div>
     </div>
   </main>
 
@@ -42,45 +41,99 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const generateForm = document.getElementById('generateForm');
-    const generatedCodesDiv = document.getElementById('generated-codes');
-  
-    generateForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-  
-      const cities = document.getElementById('cities').value;
-      const quantity = document.getElementById('quantity').value;
-  
-      try {
-        const response = await fetch('/api/generate-codes', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ cities, quantity }),
-        });
-  
-        if (!response.ok) {
-          throw new Error('Falha ao gerar códigos');
+      const generateForm = document.getElementById('generateForm');
+      const generatedCodesDiv = document.getElementById('generated-codes');
+      const messageElement = document.getElementById('message');
+
+      generateForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        // Limpa mensagens anteriores
+        messageElement.classList.add('hidden');
+
+        // Obtém os valores dos campos do formulário
+        const citiesInput = document.getElementById('cities').value;
+        const quantity = parseInt(document.getElementById('quantity').value, 10);
+        const type = document.getElementById('type').value;
+
+        if (!citiesInput || !quantity || quantity < 1) {
+          showMessage('error', 'Por favor, preencha todos os campos corretamente.');
+          return;
         }
-  
-        const data = await response.json();
-        displayGeneratedCodes(data.generatedCodes);
-      } catch (error) {
-        console.error('Erro:', error);
-        alert('Ocorreu um erro ao gerar os códigos. Por favor, tente novamente.');
+
+        try {
+          // Envia uma requisição POST para a API
+          const response = await fetch('/api/generate-codes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cities: citiesInput, quantity, type }),
+          });
+
+          if (!response.ok) {
+            const errorMessage = await response.json();
+            throw new Error(errorMessage.error || 'Falha ao gerar códigos');
+          }
+
+          // Processa a resposta da API
+          const data = await response.json();
+          displayGeneratedCodes(data.generatedCodes, citiesInput.split(/[,;]/).map(city => city.trim()));
+          saveAsCSV(data.generatedCodes, citiesInput.split(/[,;]/).map(city => city.trim()));
+          showMessage('success', 'Códigos gerados e salvos com sucesso!');
+        } catch (error) {
+          console.error('Erro:', error);
+          showMessage('error', 'Ocorreu um erro ao gerar os códigos. Por favor, tente novamente.');
+        }
+      });
+
+      // Função para exibir os códigos gerados na página
+      function displayGeneratedCodes(codes, cities) {
+        generatedCodesDiv.innerHTML = '<h2>Códigos Gerados:</h2>';
+        codes.forEach((code, index) => {
+          const city = cities[index % cities.length]; // Associa o código à cidade
+          const p = document.createElement('p');
+          p.innerHTML = `<code>${code} (${city})</code>`;
+          generatedCodesDiv.appendChild(p);
+        });
+      }
+
+      // Função para salvar os códigos em um arquivo CSV
+      function saveAsCSV(codes, cities) {
+        // Cria o cabeçalho da planilha
+        let csvContent = "data:text/csv;charset=utf-8,CIDADE,CÓDIGO DE RASTREIO\n";
+
+        // Adiciona os dados dos códigos gerados
+        codes.forEach((code, index) => {
+          const city = cities[index % cities.length]; // Associa o código à cidade
+          const trackingCode = code.replace(/\s*\(.*$/, '').trim(); // Remove parênteses indesejados
+          csvContent += `"${city}","${trackingCode}"\n`;
+        });
+
+        // Codifica o conteúdo para URI
+        const encodedUri = encodeURI(csvContent);
+
+        // Cria um link para download
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "tracking_codes.csv");
+        document.body.appendChild(link); // Required for Firefox
+        link.click();
+
+        // Limpa o link
+        document.body.removeChild(link);
+      }
+
+      // Função para exibir mensagens na página
+      function showMessage(type, messageText) {
+        messageElement.textContent = messageText;
+        messageElement.className = `message ${type}`; // Define a classe baseada no tipo (success/error)
+        messageElement.classList.remove('hidden'); // Exibe a mensagem
+        setTimeout(() => {
+          messageElement.classList.add('hidden'); // Oculta após 5 segundos
+        }, 5000);
       }
     });
-  
-    function displayGeneratedCodes(codes) {
-      generatedCodesDiv.innerHTML = '<h2>Códigos Gerados:</h2>';
-      codes.forEach(code => {
-        const p = document.createElement('p');
-        p.innerHTML = `<code>${code}</code>`;
-        generatedCodesDiv.appendChild(p);
-      });
-    }
-  });
   </script>
 </body>
 </html>

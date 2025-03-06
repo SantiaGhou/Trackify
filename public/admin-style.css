@@ -1,94 +1,102 @@
-.generated-codes {
-  margin-top: 2rem;
-}
-
-.generated-codes p {
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-  color: #333;
-}
-
-.generated-codes p code {
-  background-color: #f0f0f0;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-  color: #ff6f00;
-}
+/* Reset básico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
 }
+
 body {
-  background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
   color: #333;
+  line-height: 1.6;
 }
+
+/* Estilo do container principal */
 .container {
-  width: 90%;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 20px;
 }
-.header {
-  background: linear-gradient(135deg, #ff8000, #ff5500);
-  color: white;
-  padding: 20px;
-  text-align: center;
-  font-size: 1.5em;
-  font-weight: bold;
+
+
+/* Estilo da Main Section */
+main {
+  padding: 40px 0;
 }
-.main {
+
+form {
   background: white;
   padding: 30px;
-  margin-top: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
 }
-h1 {
-  color: #ff5500;
-  text-align: center;
-  margin-bottom: 20px;
-}
+
 label {
   display: block;
-  margin: 10px 0 5px;
+  margin-bottom: 8px;
   font-weight: bold;
 }
-input {
+
+input[type="text"],
+input[type="number"],
+select {
   width: 100%;
   padding: 10px;
-  border: 2px solid #ff5500;
-  border-radius: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
 }
+
 button {
-  width: 100%;
-  padding: 12px;
-  background: #ff5500;
-  border: none;
+  background: #ff7b00;
   color: white;
-  font-size: 1em;
-  font-weight: bold;
-  border-radius: 5px;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
   cursor: pointer;
-  transition: 0.3s;
+  width: 100%;
 }
+
 button:hover {
-  background: #ff8000;
+  background: #ff8513;
 }
-.generated-codes {
-  margin-top: 20px;
-  padding: 10px;
-  background: #fff3e0;
-  border-left: 5px solid #ff5500;
-  border-radius: 5px;
+
+/* Estilo para os códigos gerados */
+#generated-codes {
+  margin-top: 40px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
 }
-.footer {
-  text-align: center;
-  padding: 15px;
+
+#generated-codes h2 {
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+#generated-codes p {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Estilo do Footer */
+footer {
   background: #333;
   color: white;
-  margin-top: 30px;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 40px;
+}
+
+footer p {
+  font-size: 0.9rem;
 }
