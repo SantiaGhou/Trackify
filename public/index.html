@@ -38,10 +38,9 @@
   <section id="tracking-results" class="tracking-results hidden">
     <div class="container">
       <h2>Histórico de Rastreamento</h2>
-      <ul id="tracking-history" class="tracking-list"></ul>
+      <h3 id="destination-info" class="destination-info"></h3>
+      <div id="tracking-cards" class="tracking-cards"></div>
     </div>
-  </section>
-  
   </section>
 
   <!-- Features Section -->
@@ -78,77 +77,111 @@
   <!-- JavaScript -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM totalmente carregado!");
+      const form = document.getElementById("trackingForm");
 
-  const form = document.getElementById("trackingForm");
-
-  if (!form) {
-    console.error("Formulário não encontrado!");
-    return;
-  }
-
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault(); // Impede o recarregamento da página
-
-    // Obtém o código digitado pelo usuário
-    const trackingCode = document.getElementById("tracking-code").value.trim();
-
-    // Validação básica
-    if (!trackingCode) {
-      alert("Por favor, insira um código de rastreamento.");
-      return;
-    }
-
-    console.log("Código inserido:", trackingCode);
-
-    try {
-      // Faz a requisição para a API (simulação)
-      const response = await fetch(`/api/check-status/${trackingCode}`);
-      const data = await response.json();
-
-      // Verifica se o código foi encontrado
-      if (response.status === 404) {
-        alert(data.error || "Código não encontrado.");
+      if (!form) {
+        console.error("Formulário não encontrado!");
         return;
       }
 
-      // Exibe os resultados
-      displayTrackingResults(data.history);
-    } catch (error) {
-      console.error("Erro ao consultar o status:", error);
-      alert("Ocorreu um erro ao consultar o status. Tente novamente.");
-    }
-  });
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault(); // Impede o recarregamento da página
 
-  function displayTrackingResults(history) {
-    const trackingResultsSection = document.getElementById("tracking-results");
-    const trackingHistoryList = document.getElementById("tracking-history");
+        // Obtém o código digitado pelo usuário
+        const trackingCode = document.getElementById("tracking-code").value.trim();
 
-    if (!trackingResultsSection || !trackingHistoryList) {
-      console.error("Elementos de resultado não encontrados!");
-      return;
-    }
+        // Validação básica
+        if (!trackingCode) {
+          alert("Por favor, insira um código de rastreamento.");
+          return;
+        }
 
-    // Limpa a lista anterior
-    trackingHistoryList.innerHTML = "";
+        try {
+          // Faz a requisição para a API
+          const response = await fetch(`/api/check-status/${trackingCode}`);
+          const data = await response.json();
 
-    // Adiciona cada item do histórico à lista
-    history.forEach((item) => {
-      const listItem = document.createElement("li");
-      listItem.innerHTML = `
-        <span class="status">${item.status || "Status desconhecido"}</span>
-        <span class="timestamp">${item.timestamp || "Data/hora indisponível"}</span>
-        <p>${item.description || "Descrição indisponível"}</p>
-      `;
-      trackingHistoryList.appendChild(listItem);
+          // Verifica se o código foi encontrado
+          if (response.status === 404) {
+            alert(data.error || "Código não encontrado.");
+            return;
+          }
+
+          // Exibe os resultados em formato de cards
+          displayTrackingResults(data.history, data.city); // Passa a cidade recebida da API
+        } catch (error) {
+          console.error("Erro ao consultar o status:", error);
+          alert("Ocorreu um erro ao consultar o status. Tente novamente.");
+        }
+      });
+
+      function displayTrackingResults(history, city) {
+        const trackingResultsSection = document.getElementById("tracking-results");
+        const trackingCardsContainer = document.getElementById("tracking-cards");
+        const destinationInfo = document.getElementById("destination-info");
+
+        if (!trackingResultsSection || !trackingCardsContainer || !destinationInfo) {
+          console.error("Elementos de resultado não encontrados!");
+          return;
+        }
+
+        // Limpa os cards anteriores
+        trackingCardsContainer.innerHTML = "";
+
+        // Exibe o destino
+        destinationInfo.textContent = `Destino: ${city || "Indisponível"}`;
+
+        // Mapeamento de ícones para cada status
+        const statusIcons = {
+          CRIADO: "📝",
+          POSTADO: "📦",
+          DESPACHADO: "🚚",
+          "EM TRÂNSITO LOCAL": "🚗",
+          "ENTRADA NO CENTRO DE DISTRIBUIÇÃO": "🏭",
+          "CLASSIFICAÇÃO DO PRODUTO": "📋",
+          "EM TRANSFERÊNCIA PARA FILIAL": "🔄",
+          "ENTRADA NA FILIAL DESTINO": "🏢",
+          "PREPARAÇÃO PARA ENTREGA": "🔧",
+          "PRODUTO EM ROTA DE ENTREGA": "🚚",
+          "CHEGADA NA CIDADE DE DESTINO": "🌆",
+          "NA FILA DE ENTREGA": "⏳",
+          "SAIU PARA ENTREGA": "🚚",
+          "FALHA NA ENTREGA": "❌",
+          "NOVA TENTATIVA DE ENTREGA": "🔄",
+          "ENTREGUE AO DESTINATÁRIO": "✅",
+          "DESPACHADO DA ORIGEM": "✈️",
+          "EM TRÂNSITO INTERNACIONAL": "🚢",
+          "CHEGADA NO PAÍS DE DESTINO": "🌍",
+          "EM TRÂNSITO PARA ALFÂNDEGA": "🛃",
+          "ANÁLISE NA ALFÂNDEGA": "🔍",
+          "LIBERADO PELA ALFÂNDEGA": "✔️",
+          "EM TRANSFERÊNCIA PARA CENTRO DE DISTRIBUIÇÃO": "🔄"
+        };
+
+        // Adiciona cada item do histórico como um card
+        history.forEach((item) => {
+          const card = document.createElement("div");
+          card.classList.add("tracking-card");
+
+          const icon = statusIcons[item.status] || "❓"; // Ícone padrão caso o status não seja reconhecido
+          card.innerHTML = `
+            <div class="card-header">
+              <span class="status-icon">${icon}</span>
+              <span class="status">${item.status}</span>
+            </div>
+            <div class="card-body">
+              <p><strong>Data/Hora:</strong> ${item.timestamp || "Indisponível"}</p>
+              <p><strong>Descrição:</strong> ${item.description || "Indisponível"}</p>
+            </div>
+          `;
+
+          trackingCardsContainer.appendChild(card);
+        });
+
+        // Remove a classe "hidden" para exibir a seção
+        trackingResultsSection.classList.remove("hidden");
+      }
     });
-
-    // Remove a classe "hidden" para exibir a seção
-    trackingResultsSection.classList.remove("hidden");
-  }
-});
-
-
   </script>
 </body>
 </html>
