@@ -310,3 +310,32 @@ body {
   font-size: 0.9rem;
   color: #333;
 }
+
+/* Estilo para os cards de rastreamento */
+.tracking-card {
+  margin-bottom: 16px;
+  padding: 12px;
+  border-left: 4px solid #ff7300; /* Barra lateral colorida */
+  background-color: transparent; /* Sem fundo */
+  border-radius: 4px;
+  box-shadow: none; /* Sem sombra */
+}
+
+.tracking-card .card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.tracking-card .status-icon {
+  font-size: 1.5em;
+  margin-right: 8px;
+}
+
+.tracking-card .status {
+  font-weight: bold;
+}
+
+.tracking-card .card-body p {
+  margin: 4px 0;
+}
