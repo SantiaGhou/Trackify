@@ -117,6 +117,7 @@ app.post("/api/generate-codes", (req, res) => {
       createdAt: createdAtDate.getTime(), // Salva o timestamp do dia anterior
       currentStep: 0,
       hasFailed: false,
+      hasRandomEvent: false, // Novo campo para controlar eventos aleatórios
       history,
     });
 
@@ -133,12 +134,12 @@ app.get("/api/check-status/:code", (req, res) => {
   // Limpa o código recebido (remove espaços e caracteres indesejados)
   const cleanedCode = code.replace(/\s*\(.*$/, "").trim();
   const data = readData();
-  const trackingCode = data.trackingCodes.find(
-    (item) => item.code === cleanedCode
-  );
+  const trackingCode = data.trackingCodes.find((item) => item.code === cleanedCode);
+
   if (!trackingCode) {
     return res.status(404).json({ error: "Código não encontrado." });
   }
+
   res.json({
     code: trackingCode.code,
     city: trackingCode.city,
@@ -196,6 +197,17 @@ setInterval(() => {
     const elapsedTime = (now - trackingCode.createdAt) / (1000 * 60 * 60 * 24);
     const steps = trackingCode.code.startsWith("INT") ? internationalSteps : nationalSteps;
 
+    // Adiciona eventos aleatórios antes do status final
+    if (
+      elapsedTime > steps[steps.length - 2].days && // Apenas antes do penúltimo status
+      elapsedTime < steps[steps.length - 1].days && // E antes do último status
+      !trackingCode.hasRandomEvent && // Garante que o evento ocorra apenas uma vez
+      Math.random() < 0.1 // 10% de chance de evento
+    ) {
+      addRandomEvent(trackingCode, now);
+      trackingCode.hasRandomEvent = true; // Marca que o evento já ocorreu
+    }
+
     // Falha na entrega
     if (
       elapsedTime >= steps[steps.length - 3].days &&
@@ -207,7 +219,6 @@ setInterval(() => {
         new Date(now - 1000 * 60 * 60 * 24), // 1 dia antes
         new Date(now) // Agora
       );
-
       trackingCode.history.push({
         status: "FALHA NA ENTREGA",
         timestamp: failTime.toLocaleString("pt-BR", { hour12: false }),
@@ -224,13 +235,10 @@ setInterval(() => {
     const nextStep = steps.find((step) => step.days > elapsedTime);
     if (nextStep && trackingCode.currentStep < steps.indexOf(nextStep)) {
       const step = steps[trackingCode.currentStep];
-
-      // Gera um horário aleatório para o status
       const randomTime = generateRandomTime(
         new Date(now - 1000 * 60 * 60 * 24 * step.days), // Data mínima
         new Date(now) // Agora
       );
-
       trackingCode.history.push({
         status: step.status,
         timestamp: randomTime.toLocaleString("pt-BR", { hour12: false }),
@@ -242,6 +250,34 @@ setInterval(() => {
 
   saveData(data);
 }, 10000);
+
+// Função para adicionar eventos aleatórios
+function addRandomEvent(trackingCode, now) {
+  const eventTypes = [
+    {
+      status: "ATRASO",
+      description: "A entrega foi atrasada devido a condições climáticas adversas."
+    },
+    {
+      status: "GREVE",
+      description: "Houve uma greve local que impactou a entrega."
+    },
+    {
+      status: "PRODUTO DANIFICADO",
+      description: "O produto foi danificado durante o transporte e está sendo reparado."
+    },
+    {
+      status: "ROTA ALTERADA",
+      description: "A rota de entrega foi alterada devido a problemas logísticos."
+    }
+  ];
+  const randomEvent = eventTypes[Math.floor(Math.random() * eventTypes.length)];
+  trackingCode.history.push({
+    status: randomEvent.status,
+    timestamp: new Date().toLocaleString("pt-BR", { hour12: false }),
+    description: randomEvent.description
+  });
+}
 
 // Iniciar o servidor
 app.listen(PORT, () => {
