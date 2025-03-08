@@ -153,20 +153,20 @@ setInterval(() => {
 
   // Steps para pedidos nacionais
   const nationalSteps = [
-    { status: "DESPACHADO", days: 1, description: "O produto foi despachado da unidade de origem." },
-    { status: "EM TRÂNSITO LOCAL", days: 2, description: "O produto está em trânsito local." },
-    { status: "ENTRADA NO CENTRO DE DISTRIBUIÇÃO", days: 3, description: "O produto chegou ao centro de distribuição." },
-    { status: "CLASSIFICAÇÃO DO PRODUTO", days: 4, description: "O produto está sendo classificado para envio." },
-    { status: "EM TRANSFERÊNCIA PARA FILIAL", days: 5, description: "O produto está sendo transferido para a filial de destino." },
-    { status: "ENTRADA NA FILIAL DESTINO", days: 7, description: "O produto chegou à filial de destino." },
-    { status: "PREPARAÇÃO PARA ENTREGA", days: 9, description: "O produto está sendo preparado para entrega." },
-    { status: "PRODUTO EM ROTA DE ENTREGA", days: 11, description: "O produto está em rota de entrega para a cidade de destino." },
-    { status: "CHEGADA NA CIDADE DE DESTINO", days: 13, description: "O produto chegou na cidade de destino." },
-    { status: "NA FILA DE ENTREGA", days: 15, description: "O produto está na fila de entrega." },
-    { status: "SAIU PARA ENTREGA", days: 17, description: "O produto saiu para entrega ao destinatário." },
-    { status: "FALHA NA ENTREGA", days: 18, description: "O entregador não localizou o endereço do destinatário. Nova tentativa será feita no próximo dia útil." },
-    { status: "NOVA TENTATIVA DE ENTREGA", days: 19, description: "Nova tentativa de entrega ao destinatário." },
-    { status: "ENTREGUE AO DESTINATÁRIO", days: 20, description: "O produto foi entregue ao destinatário." },
+    { status: "DESPACHADO", days: 2, description: "O produto foi despachado da unidade de origem." },
+    { status: "EM TRÂNSITO LOCAL", days: 3, description: "O produto está em trânsito local." },
+    { status: "ENTRADA NO CENTRO DE DISTRIBUIÇÃO", days: 5, description: "O produto chegou ao centro de distribuição." },
+    { status: "CLASSIFICAÇÃO DO PRODUTO", days: 6, description: "O produto está sendo classificado para envio." },
+    { status: "EM TRANSFERÊNCIA PARA FILIAL", days: 8, description: "O produto está sendo transferido para a filial de destino." },
+    { status: "ENTRADA NA FILIAL DESTINO", days: 12, description: "O produto chegou à filial de destino." },
+    { status: "PREPARAÇÃO PARA ENTREGA", days: 13, description: "O produto está sendo preparado para entrega." },
+    { status: "PRODUTO EM ROTA DE ENTREGA", days: 15, description: "O produto está em rota de entrega para a cidade de destino." },
+    { status: "CHEGADA NA CIDADE DE DESTINO", days: 19, description: "O produto chegou na cidade de destino." },
+    { status: "NA FILA DE ENTREGA", days: 20, description: "O produto está na fila de entrega." },
+    { status: "SAIU PARA ENTREGA", days: 22, description: "O produto saiu para entrega ao destinatário." },
+    { status: "FALHA NA ENTREGA", days: 23, description: "O entregador não localizou o endereço do destinatário. Nova tentativa será feita nos próximos dias útil." },
+    { status: "NOVA TENTATIVA DE ENTREGA", days: 26, description: "Nova tentativa de entrega ao destinatário." },
+    { status: "ENTREGUE AO DESTINATÁRIO", days: 30, description: "O produto foi entregue ao destinatário." },
   ];
 
   // Steps para pedidos internacionais
