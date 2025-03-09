@@ -107,7 +107,6 @@ A resposta incluirá o status atual e o histórico completo.
 
 ## 🛠️ Administração
 
-- O acesso à interface administrativa é protegido por token.
 - Para gerar um novo token de administração, utilize:
 
 ```bash
