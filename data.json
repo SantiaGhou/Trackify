@@ -1,99 +1,69 @@
 {
   "trackingCodes": [
     {
-      "code": "TESTE123",
-      "city": "Rio de Janeiro",
-      "createdAt": 1719619200000,
-      "currentStep": 11,
-      "hasFailed": false,
-      "hasRandomEvent": false,
-      "history": [
-        {
-          "status": "CRIADO",
-          "timestamp": "29/06/2025 08:00:00",
-          "description": "Pedido aprovado! Aguarde os demais status de rastreamento."
-        },
-        {
-          "status": "POSTADO",
-          "timestamp": "29/06/2025 10:00:00",
-          "description": "O seu pedido foi postado com sucesso."
-        },
-        {
-          "status": "📦 DESPACHADO",
-          "timestamp": "29/06/2025 12:00:00",
-          "description": "O produto foi despachado da unidade de origem."
-        },
-        {
-          "status": "🚚 EM TRÂNSITO LOCAL",
-          "timestamp": "30/06/2025 09:00:00",
-          "description": "O produto está em trânsito local."
-        },
-        {
-          "status": "🏢 CHEGOU NO CENTRO DE DISTRIBUIÇÃO",
-          "timestamp": "01/07/2025 08:30:00",
-          "description": "O produto chegou ao centro de distribuição."
-        },
-        {
-          "status": "🛠️ PREPARANDO PARA SAIR",
-          "timestamp": "01/07/2025 15:00:00",
-          "description": "O produto está sendo preparado para sair."
-        },
-        {
-          "status": "🚛 PACOTE EM TRÂNSITO",
-          "timestamp": "02/07/2025 09:30:00",
-          "description": "O pacote está em trânsito para a cidade de destino. Destino: Rio de Janeiro."
-        },
-        {
-          "status": "📍 PACOTE CHEGOU NA CIDADE Destino",
-          "timestamp": "03/07/2025 08:00:00",
-          "description": "O pacote chegou em Rio de Janeiro."
-        },
-        {
-          "status": "📬 PACOTE PRONTO PARA ENTREGA",
-          "timestamp": "03/07/2025 13:00:00",
-          "description": "O pacote está pronto para entrega."
-        },
-        {
-          "status": "🏃‍♂️ SAIU PARA ENTREGA",
-          "timestamp": "04/07/2025 09:00:00",
-          "description": "O pacote saiu para entrega. Destino: Rio de Janeiro."
-        },
-        {
-          "status": "🔄 SAINDO PARA ENTREGA",
-          "timestamp": "04/07/2025 13:30:00",
-          "description": "O pacote está saindo para entrega novamente. Destino: Rio de Janeiro."
-        },
-        {
-          "status": "✅ ENTREGUE",
-          "timestamp": "04/07/2025 17:00:00",
-          "description": "O pacote foi entregue ao destinatário."
-        }
-      ]
+  "code": "TESTE123456BR",
+  "city": "Cidade Exemplo",
+  "createdAt": 1719619200000,
+  "currentStep": 11,
+  "hasFailed": false,
+  "hasRandomEvent": false,
+  "history": [
+    {
+      "status": "📦 DESPACHADO",
+      "timestamp": "20/06/2025 08:00:00",
+      "description": "O produto foi despachado da unidade de origem."
     },
     {
-      "code": "BR456736663WJ",
-      "city": "são paulo",
-      "createdAt": 1751230800000,
-      "currentStep": 1,
-      "hasFailed": false,
-      "hasRandomEvent": false,
-      "history": [
-        {
-          "status": "CRIADO",
-          "timestamp": "29/06/2025, 06:20:43",
-          "description": "Pedido aprovado! Aguarde os demais status de rastreamento."
-        },
-        {
-          "status": "POSTADO",
-          "timestamp": "29/06/2025, 13:41:33",
-          "description": "O seu pedido foi postado com sucesso."
-        },
-        {
-          "status": "📦 DESPACHADO",
-          "timestamp": "30/06/2025, 13:42:02",
-          "description": "O produto foi despachado da unidade de origem."
-        }
-      ]
+      "status": "🚚 EM TRÂNSITO LOCAL",
+      "timestamp": "21/06/2025 08:00:00",
+      "description": "O produto está em trânsito local."
+    },
+    {
+      "status": "🏢 CHEGOU NO CENTRO DE DISTRIBUIÇÃO",
+      "timestamp": "22/06/2025 08:00:00",
+      "description": "O produto chegou ao centro de distribuição."
+    },
+    {
+      "status": "🛠️ PREPARANDO PARA SAIR",
+      "timestamp": "23/06/2025 08:00:00",
+      "description": "O produto está sendo preparado para sair."
+    },
+    {
+      "status": "🚛 PACOTE EM TRÂNSITO PARA CIDADE",
+      "timestamp": "24/06/2025 08:00:00",
+      "description": "O pacote está em trânsito para Cidade Exemplo."
+    },
+    {
+      "status": "📍 PACOTE CHEGOU EM CIDADE",
+      "timestamp": "25/06/2025 08:00:00",
+      "description": "O pacote chegou em Cidade Exemplo."
+    },
+    {
+      "status": "📬 PACOTE PRONTO PARA ENTREGA",
+      "timestamp": "26/06/2025 08:00:00",
+      "description": "O pacote está pronto para entrega."
+    },
+    {
+      "status": "🏃‍♂️ SAIU PARA ENTREGA",
+      "timestamp": "27/06/2025 08:00:00",
+      "description": "O pacote saiu para entrega."
+    },
+    {
+      "status": "❌ FALHA NA ENTREGA",
+      "timestamp": "28/06/2025 08:00:00",
+      "description": "Falha na entrega (destinatário não encontrado)."
+    },
+    {
+      "status": "🔄 SAINDO PARA ENTREGA",
+      "timestamp": "29/06/2025 08:00:00",
+      "description": "O pacote está saindo para entrega novamente."
+    },
+    {
+      "status": "✅ ENTREGUE",
+      "timestamp": "30/06/2025 08:00:00",
+      "description": "O pacote foi entregue ao destinatário."
     }
+  ]
+}
   ]
 }
