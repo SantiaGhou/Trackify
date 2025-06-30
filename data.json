@@ -1,185 +1,72 @@
 {
   "trackingCodes": [
     {
-      "code": "BR1373209686E",
-      "city": "Teste Nacional",
-      "createdAt": 1741281864738,
-      "currentStep": 13,
+      "code": "TESTE123",
+      "city": "Rio de Janeiro",
+      "createdAt": 1719619200000,
+      "currentStep": 11,
       "hasFailed": false,
+      "hasRandomEvent": false,
       "history": [
         {
           "status": "CRIADO",
-          "timestamp": "05/03/2025, 10:15:42",
-          "description": "Pedido aprovado!. Aguarde os demais status de rastreamento."
+          "timestamp": "29/06/2025 08:00:00",
+          "description": "Pedido aprovado! Aguarde os demais status de rastreamento."
         },
         {
           "status": "POSTADO",
-          "timestamp": "06/03/2025, 14:32:18",
-          "description": "O seu pedido foi postado com sucesso. Destino: Teste Nacional."
+          "timestamp": "29/06/2025 10:00:00",
+          "description": "O seu pedido foi postado com sucesso."
         },
         {
-          "status": "DESPACHADO",
-          "timestamp": "07/03/2025, 11:45:56",
-          "description": "O produto foi despachado da unidade de origem. Destino: Teste Nacional."
+          "status": "📦 DESPACHADO",
+          "timestamp": "29/06/2025 12:00:00",
+          "description": "O produto foi despachado da unidade de origem."
         },
         {
-          "status": "EM TRÂNSITO LOCAL",
-          "timestamp": "08/03/2025, 16:23:12",
-          "description": "O produto está em trânsito local. Destino: Teste Nacional."
+          "status": "🚚 EM TRÂNSITO LOCAL",
+          "timestamp": "30/06/2025 09:00:00",
+          "description": "O produto está em trânsito local."
         },
         {
-          "status": "ENTRADA NO CENTRO DE DISTRIBUIÇÃO",
-          "timestamp": "09/03/2025, 08:12:34",
-          "description": "O produto chegou ao centro de distribuição. Destino: Teste Nacional."
+          "status": "🏢 CHEGOU NO CENTRO DE DISTRIBUIÇÃO",
+          "timestamp": "01/07/2025 08:30:00",
+          "description": "O produto chegou ao centro de distribuição."
         },
         {
-          "status": "CLASSIFICAÇÃO DO PRODUTO",
-          "timestamp": "10/03/2025, 13:56:47",
-          "description": "O produto está sendo classificado para envio. Destino: Teste Nacional."
+          "status": "🛠️ PREPARANDO PARA SAIR",
+          "timestamp": "01/07/2025 15:00:00",
+          "description": "O produto está sendo preparado para sair."
         },
         {
-          "status": "EM TRANSFERÊNCIA PARA FILIAL",
-          "timestamp": "11/03/2025, 19:10:22",
-          "description": "O produto está sendo transferido para a filial de destino. Destino: Teste Nacional."
+          "status": "🚛 PACOTE EM TRÂNSITO",
+          "timestamp": "02/07/2025 09:30:00",
+          "description": "O pacote está em trânsito para a cidade de destino. Destino: Rio de Janeiro."
         },
         {
-          "status": "ENTRADA NA FILIAL DESTINO",
-          "timestamp": "13/03/2025, 14:30:59",
-          "description": "O produto chegou à filial de destino. Destino: Teste Nacional."
+          "status": "📍 PACOTE CHEGOU NA CIDADE Destino",
+          "timestamp": "03/07/2025 08:00:00",
+          "description": "O pacote chegou em Rio de Janeiro."
         },
         {
-          "status": "PREPARAÇÃO PARA ENTREGA",
-          "timestamp": "15/03/2025, 07:45:11",
-          "description": "O produto está sendo preparado para entrega. Destino: Teste Nacional."
+          "status": "📬 PACOTE PRONTO PARA ENTREGA",
+          "timestamp": "03/07/2025 13:00:00",
+          "description": "O pacote está pronto para entrega."
         },
         {
-          "status": "PRODUTO EM ROTA DE ENTREGA",
-          "timestamp": "17/03/2025, 11:22:33",
-          "description": "O produto está em rota de entrega para a cidade de destino. Destino: Teste Nacional."
+          "status": "🏃‍♂️ SAIU PARA ENTREGA",
+          "timestamp": "04/07/2025 09:00:00",
+          "description": "O pacote saiu para entrega. Destino: Rio de Janeiro."
         },
         {
-          "status": "CHEGADA NA CIDADE DE DESTINO",
-          "timestamp": "19/03/2025, 15:40:55",
-          "description": "O produto chegou na cidade de destino. Destino: Teste Nacional."
+          "status": "🔄 SAINDO PARA ENTREGA",
+          "timestamp": "04/07/2025 13:30:00",
+          "description": "O pacote está saindo para entrega novamente. Destino: Rio de Janeiro."
         },
         {
-          "status": "NA FILA DE ENTREGA",
-          "timestamp": "21/03/2025, 09:18:22",
-          "description": "O produto está na fila de entrega. Destino: Teste Nacional."
-        },
-        {
-          "status": "SAIU PARA ENTREGA",
-          "timestamp": "23/03/2025, 17:55:33",
-          "description": "O produto saiu para entrega ao destinatário. Destino: Teste Nacional."
-        },
-        {
-          "status": "ENTREGUE AO DESTINATÁRIO",
-          "timestamp": "25/03/2025, 12:30:44",
-          "description": "O produto foi entregue ao destinatário. Destino: Teste Nacional."
-        }
-      ]
-    },
-    {
-      "code": "CN991109212PD",
-      "city": "Teste Internacional",
-      "createdAt": 1741281880855,
-      "currentStep": 15,
-      "hasFailed": false,
-      "history": [
-        {
-          "status": "CRIADO",
-          "timestamp": "05/03/2025, 08:55:12",
-          "description": "Pedido aprovado!. Aguarde os demais status de rastreamento."
-        },
-        {
-          "status": "POSTADO",
-          "timestamp": "06/03/2025, 13:20:45",
-          "description": "O seu pedido foi postado com sucesso. Destino: Teste Internacional."
-        },
-        {
-          "status": "DESPACHADO DA ORIGEM",
-          "timestamp": "08/03/2025, 10:30:22",
-          "description": "O produto foi despachado da unidade de origem internacional. Destino: Teste Internacional."
-        },
-        {
-          "status": "EM TRÂNSITO INTERNACIONAL",
-          "timestamp": "11/03/2025, 14:15:55",
-          "description": "O produto está em trânsito internacional. Destino: Teste Internacional."
-        },
-        {
-          "status": "CHEGADA NO PAÍS DE DESTINO",
-          "timestamp": "16/03/2025, 07:45:33",
-          "description": "O produto chegou ao país de destino. Destino: Teste Internacional."
-        },
-        {
-          "status": "EM TRÂNSITO PARA ALFÂNDEGA",
-          "timestamp": "18/03/2025, 11:22:11",
-          "description": "O produto está em trânsito para a alfândega. Destino: Teste Internacional."
-        },
-        {
-          "status": "ANÁLISE NA ALFÂNDEGA",
-          "timestamp": "21/03/2025, 15:30:44",
-          "description": "O produto está em análise na alfândega. Destino: Teste Internacional."
-        },
-        {
-          "status": "LIBERADO PELA ALFÂNDEGA",
-          "timestamp": "24/03/2025, 09:10:55",
-          "description": "O produto foi liberado pela alfândega. Destino: Teste Internacional."
-        },
-        {
-          "status": "EM TRANSFERÊNCIA PARA CENTRO DE DISTRIBUIÇÃO",
-          "timestamp": "26/03/2025, 13:45:22",
-          "description": "O produto está sendo transferido para o centro de distribuição nacional. Destino: Teste Internacional."
-        },
-        {
-          "status": "ENTRADA NO CENTRO DE DISTRIBUIÇÃO",
-          "timestamp": "28/03/2025, 08:30:11",
-          "description": "O produto chegou ao centro de distribuição nacional. Destino: Teste Internacional."
-        },
-        {
-          "status": "CLASSIFICAÇÃO DO PRODUTO",
-          "timestamp": "30/03/2025, 12:15:33",
-          "description": "O produto está sendo classificado para envio. Destino: Teste Internacional."
-        },
-        {
-          "status": "EM TRANSFERÊNCIA PARA FILIAL",
-          "timestamp": "01/04/2025, 17:22:44",
-          "description": "O produto está sendo transferido para a filial de destino. Destino: Teste Internacional."
-        },
-        {
-          "status": "ENTRADA NA FILIAL DESTINO",
-          "timestamp": "03/04/2025, 09:55:11",
-          "description": "O produto chegou à filial de destino. Destino: Teste Internacional."
-        },
-        {
-          "status": "PREPARAÇÃO PARA ENTREGA",
-          "timestamp": "05/04/2025, 14:30:22",
-          "description": "O produto está sendo preparado para entrega. Destino: Teste Internacional."
-        },
-        {
-          "status": "PRODUTO EM ROTA DE ENTREGA",
-          "timestamp": "07/04/2025, 11:45:55",
-          "description": "O produto está em rota de entrega para a cidade de destino. Destino: Teste Internacional."
-        },
-        {
-          "status": "CHEGADA NA CIDADE DE DESTINO",
-          "timestamp": "09/04/2025, 15:20:33",
-          "description": "O produto chegou na cidade de destino. Destino: Teste Internacional."
-        },
-        {
-          "status": "NA FILA DE ENTREGA",
-          "timestamp": "11/04/2025, 08:10:44",
-          "description": "O produto está na fila de entrega. Destino: Teste Internacional."
-        },
-        {
-          "status": "SAIU PARA ENTREGA",
-          "timestamp": "13/04/2025, 13:55:11",
-          "description": "O produto saiu para entrega ao destinatário. Destino: Teste Internacional."
-        },
-        {
-          "status": "ENTREGUE AO DESTINATÁRIO",
-          "timestamp": "15/04/2025, 10:30:22",
-          "description": "O produto foi entregue ao destinatário. Destino: Teste Internacional."
+          "status": "✅ ENTREGUE",
+          "timestamp": "04/07/2025 17:00:00",
+          "description": "O pacote foi entregue ao destinatário."
         }
       ]
     }

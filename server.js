@@ -147,17 +147,17 @@ app.get("/api/check-status/:code", (req, res) => {
 
 // Passos nacionais atualizados
 const nationalSteps = [
-  { status: "DESPACHADO", days: 0, description: "O produto foi despachado da unidade de origem." },
-  { status: "EM TRÂNSITO LOCAL", days: 1, description: "O produto está em trânsito local." },
-  { status: "CHEGOU NO CENTRO DE DISTRIBUIÇÃO", days: 2, description: "O produto chegou ao centro de distribuição." },
-  { status: "PREPARANDO PARA SAIR", days: 3, description: "O produto está sendo preparado para sair." },
-  { status: "PACOTE EM TRÂNSITO", days: 4, description: "O pacote está em trânsito para a cidade de destino." },
-  { status: "PACOTE CHEGOU", days: 5, description: "O pacote chegou em " }, // cidade será concatenada
-  { status: "PACOTE PRONTO PARA ENTREGA", days: 6, description: "O pacote está pronto para entrega." },
-  { status: "SAIU PARA ENTREGA", days: 7, description: "O pacote saiu para entrega." },
-  { status: "FALHA NA ENTREGA", days: 8, description: "Falha na entrega (destinatário não encontrado)." },
-  { status: "SAINDO PARA ENTREGA", days: 9, description: "O pacote está saindo para entrega novamente." },
-  { status: "ENTREGUE", days: 10, description: "O pacote foi entregue ao destinatário." },
+  { status: "📦 DESPACHADO", days: 0, description: "O produto foi despachado da unidade de origem." },
+  { status: "🚚 EM TRÂNSITO LOCAL", days: 1, description: "O produto está em trânsito local." },
+  { status: "🏢 CHEGOU NO CENTRO DE DISTRIBUIÇÃO", days: 2, description: "O produto chegou ao centro de distribuição." },
+  { status: "🛠️ PREPARANDO PARA SAIR", days: 3, description: "O produto está sendo preparado para sair." },
+  { status: "🚛 PACOTE EM TRÂNSITO", days: 4, description: "O pacote está em trânsito para a cidade de destino." },
+  { status: "📍 PACOTE CHEGOU NA CIDADE Destino", days: 5, description: "O pacote chegou em " }, // cidade será concatenada
+  { status: "📬 PACOTE PRONTO PARA ENTREGA", days: 6, description: "O pacote está pronto para entrega." },
+  { status: "🏃‍♂️ SAIU PARA ENTREGA", days: 7, description: "O pacote saiu para entrega." },
+  { status: "❌ FALHA NA ENTREGA", days: 8, description: "Falha na entrega (destinatário não encontrado)." },
+  { status: "🔄 SAINDO PARA ENTREGA", days: 9, description: "O pacote está saindo para entrega novamente." },
+  { status: "✅ ENTREGUE", days: 10, description: "O pacote foi entregue ao destinatário." },
 ];
 
 // Automação de status

@@ -85,30 +85,25 @@
       }
 
       form.addEventListener("submit", async (event) => {
-        event.preventDefault(); // Impede o recarregamento da página
+        event.preventDefault();
 
-        // Obtém o código digitado pelo usuário
         const trackingCode = document.getElementById("tracking-code").value.trim();
 
-        // Validação básica
         if (!trackingCode) {
           alert("Por favor, insira um código de rastreamento.");
           return;
         }
 
         try {
-          // Faz a requisição para a API
           const response = await fetch(`/api/check-status/${trackingCode}`);
           const data = await response.json();
 
-          // Verifica se o código foi encontrado
           if (response.status === 404) {
             alert(data.error || "Código não encontrado.");
             return;
           }
 
-          // Exibe os resultados em formato de cards
-          displayTrackingResults(data.history, data.city); // Passa a cidade recebida da API
+          displayTrackingResults(data.history, data.city);
         } catch (error) {
           console.error("Erro ao consultar o status:", error);
           alert("Ocorreu um erro ao consultar o status. Tente novamente.");
@@ -125,48 +120,17 @@
           return;
         }
 
-        // Limpa os cards anteriores
         trackingCardsContainer.innerHTML = "";
 
-        // Exibe o destino
         destinationInfo.textContent = `Destino: ${city || "Indisponível"}`;
 
-        // Mapeamento de ícones para cada status
-        const statusIcons = {
-          CRIADO: "📝",
-          POSTADO: "📦",
-          DESPACHADO: "🚚",
-          "EM TRÂNSITO LOCAL": "🚗",
-          "ENTRADA NO CENTRO DE DISTRIBUIÇÃO": "🏭",
-          "CLASSIFICAÇÃO DO PRODUTO": "📋",
-          "EM TRANSFERÊNCIA PARA FILIAL": "🔄",
-          "ENTRADA NA FILIAL DESTINO": "🏢",
-          "PREPARAÇÃO PARA ENTREGA": "🔧",
-          "PRODUTO EM ROTA DE ENTREGA": "🚚",
-          "CHEGADA NA CIDADE DE DESTINO": "🌆",
-          "NA FILA DE ENTREGA": "⏳",
-          "SAIU PARA ENTREGA": "🚚",
-          "FALHA NA ENTREGA": "❌",
-          "NOVA TENTATIVA DE ENTREGA": "🔄",
-          "ENTREGUE AO DESTINATÁRIO": "✅",
-          "DESPACHADO DA ORIGEM": "✈️",
-          "EM TRÂNSITO INTERNACIONAL": "🚢",
-          "CHEGADA NO PAÍS DE DESTINO": "🌍",
-          "EM TRÂNSITO PARA ALFÂNDEGA": "🛃",
-          "ANÁLISE NA ALFÂNDEGA": "🔍",
-          "LIBERADO PELA ALFÂNDEGA": "✔️",
-          "EM TRANSFERÊNCIA PARA CENTRO DE DISTRIBUIÇÃO": "🔄"
-        };
-
-        // Adiciona cada item do histórico como um card
+        // Adiciona cada item do histórico como um card (sem ícone)
         history.forEach((item) => {
           const card = document.createElement("div");
           card.classList.add("tracking-card");
 
-          const icon = statusIcons[item.status] || "❓"; // Ícone padrão caso o status não seja reconhecido
           card.innerHTML = `
             <div class="card-header">
-              <span class="status-icon">${icon}</span>
               <span class="status">${item.status}</span>
             </div>
             <div class="card-body">
@@ -178,7 +142,6 @@
           trackingCardsContainer.appendChild(card);
         });
 
-        // Remove a classe "hidden" para exibir a seção
         trackingResultsSection.classList.remove("hidden");
       }
     });
