@@ -69,6 +69,31 @@
           "description": "O pacote foi entregue ao destinatário."
         }
       ]
+    },
+    {
+      "code": "BR456736663WJ",
+      "city": "são paulo",
+      "createdAt": 1751230800000,
+      "currentStep": 1,
+      "hasFailed": false,
+      "hasRandomEvent": false,
+      "history": [
+        {
+          "status": "CRIADO",
+          "timestamp": "29/06/2025, 06:20:43",
+          "description": "Pedido aprovado! Aguarde os demais status de rastreamento."
+        },
+        {
+          "status": "POSTADO",
+          "timestamp": "29/06/2025, 13:41:33",
+          "description": "O seu pedido foi postado com sucesso."
+        },
+        {
+          "status": "📦 DESPACHADO",
+          "timestamp": "30/06/2025, 13:42:02",
+          "description": "O produto foi despachado da unidade de origem."
+        }
+      ]
     }
   ]
 }
