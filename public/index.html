@@ -24,7 +24,7 @@
         <h2>Rastreie sua entrega com facilidade</h2>
         <p>Insira o código de rastreamento abaixo para acompanhar o status atual da sua encomenda. Nossa plataforma oferece informações precisas e atualizadas em tempo real.</p>
         <form id="trackingForm" class="form">
-          <input type="text" id="tracking-code" placeholder="Digite o código de rastreio" required>
+          <input type="text" id="tracking-code" placeholder="Digite o código de rastreio (ex.: BR123456789AB)" required>
           <button type="submit" id="check-status">Consultar</button>
         </form>
       </div>
@@ -39,7 +39,7 @@
     <div class="container">
       <h2>Histórico de Rastreamento</h2>
       <h3 id="destination-info" class="destination-info"></h3>
-      <div id="tracking-cards" class="tracking-cards"></div>
+      <div id="tracking-timeline" class="tracking-timeline"></div>
     </div>
   </section>
 
@@ -70,7 +70,7 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2025 Trackify. Todos os direitos reservados. </p>
+      <p>© 2025 Trackify. Todos os direitos reservados.</p>
     </div>
   </footer>
 
@@ -87,59 +87,93 @@
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const trackingCode = document.getElementById("tracking-code").value.trim();
+        const button = document.getElementById("check-status");
+        button.disabled = true;
+        button.textContent = "Carregando...";
+
+        const trackingCodeInput = document.getElementById("tracking-code").value.trim();
+        const trackingCode = trackingCodeInput.replace(/\s*\(.*$/, "").trim();
 
         if (!trackingCode) {
-          alert("Por favor, insira um código de rastreamento.");
+          alert("Por favor, insira um código de rastreamento válido.");
+          button.disabled = false;
+          button.textContent = "Consultar";
           return;
         }
 
-        try {
-          const response = await fetch(`/api/check-status/${trackingCode}`);
-          const data = await response.json();
+        console.log(`Consultando código: ${trackingCode}`);
 
-          if (response.status === 404) {
-            alert(data.error || "Código não encontrado.");
+        try {
+          const response = await fetch(`/api/check-status/${encodeURIComponent(trackingCode)}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          console.log("Resposta da API:", response);
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error("Erro na API:", errorData);
+            alert(errorData.error || "Código não encontrado.");
+            button.disabled = false;
+            button.textContent = "Consultar";
             return;
           }
 
-          displayTrackingResults(data.history, data.city);
+          const data = await response.json();
+          console.log("Dados recebidos:", data);
+
+          if (!data.steps || !Array.isArray(data.steps)) {
+            console.error("Dados inválidos: 'steps' não encontrado ou não é um array.", data);
+            alert("Erro ao processar os dados de rastreamento. Verifique o servidor.");
+            button.disabled = false;
+            button.textContent = "Consultar";
+            return;
+          }
+
+          displayTrackingResults(data.steps, data.city);
+          button.disabled = false;
+          button.textContent = "Consultar";
         } catch (error) {
           console.error("Erro ao consultar o status:", error);
-          alert("Ocorreu um erro ao consultar o status. Tente novamente.");
+          alert("Ocorreu um erro ao consultar o status. Verifique se o servidor está ativo e tente novamente.");
+          button.disabled = false;
+          button.textContent = "Consultar";
         }
       });
 
-      function displayTrackingResults(history, city) {
+      function displayTrackingResults(steps, city) {
         const trackingResultsSection = document.getElementById("tracking-results");
-        const trackingCardsContainer = document.getElementById("tracking-cards");
+        const trackingTimelineContainer = document.getElementById("tracking-timeline");
         const destinationInfo = document.getElementById("destination-info");
 
-        if (!trackingResultsSection || !trackingCardsContainer || !destinationInfo) {
+        if (!trackingResultsSection || !trackingTimelineContainer || !destinationInfo) {
           console.error("Elementos de resultado não encontrados!");
           return;
         }
 
-        trackingCardsContainer.innerHTML = "";
-
+        trackingTimelineContainer.innerHTML = "";
         destinationInfo.textContent = `Destino: ${city || "Indisponível"}`;
 
-        // Adiciona cada item do histórico como um card (sem ícone)
-        history.forEach((item) => {
-          const card = document.createElement("div");
-          card.classList.add("tracking-card");
+        steps.forEach((step, index) => {
+          const timelineItem = document.createElement("div");
+          timelineItem.classList.add("timeline-item", step.completed ? "completed" : "pending");
 
-          card.innerHTML = `
-            <div class="card-header">
-              <span class="status">${item.status}</span>
-            </div>
-            <div class="card-body">
-              <p><strong>Data/Hora:</strong> ${item.timestamp || "Indisponível"}</p>
-              <p><strong>Descrição:</strong> ${item.description || "Indisponível"}</p>
+          const [emoji, statusText] = step.status.includes(" ") ? step.status.split(" ") : ["", step.status];
+
+          timelineItem.innerHTML = `
+            <div class="timeline-icon">${emoji || "📍"}</div>
+            <div class="timeline-content">
+              <h4><span class="card-icon">${emoji || "📍"}</span> ${statusText || step.status}</h4>
+              <p><strong>Descrição:</strong> ${step.description || "Indisponível"}</p>
+              <p><strong>Status:</strong> ${step.completed ? "Concluído" : "Pendente"}</p>
+              ${step.timestamp ? `<p><strong>Data/Hora:</strong> ${step.timestamp}</p>` : ""}
             </div>
           `;
 
-          trackingCardsContainer.appendChild(card);
+          trackingTimelineContainer.appendChild(timelineItem);
         });
 
         trackingResultsSection.classList.remove("hidden");
